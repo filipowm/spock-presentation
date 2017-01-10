@@ -23,11 +23,13 @@ def versions = [
         slf4j      : '1.7.21',
         spock      : '1.0-groovy-2.4',
         objenesis  : '2.4',
-        cglib: '3.2.4'
+        cglib      : '3.2.4',
+        lombok     : '1.16.12'
 ]
 
 dependencies {
     compile "org.slf4j:slf4j-api:${versions.slf4j}"
+    compile "org.projectlombok:lombok:${versions.lombok}"
     testCompile(
             "org.spockframework:spock-core:${versions.spock}",
             "cglib:cglib:${versions.cglib}",
