@@ -8,5 +8,6 @@ import com.filipowm.spock.payment.model.PaymentResult;
 public interface PaymentProvider {
 
     PaymentResult pay(float money, String accountTo);
+    void shutdown();
 
 }

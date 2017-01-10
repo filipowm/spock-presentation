@@ -12,7 +12,7 @@ public class StoreService {
 
     public void prepare(Order order) {
         log.debug("Preparing order with id={}", order.getId());
-        Sleeper.sleep(1000, 3000);
+        Sleeper.sleep(500, 3000);
         log.info("Order with id={} prepared and ready to be sent", order.getId());
     }
 

@@ -14,16 +14,12 @@ public class ItemService {
 
     private final ItemRepository itemRepository;
 
-    public int updateQuantity(Integer id, int quantity) {
-        Item item = itemRepository.findById(id);
-        return updateQuantity(item, quantity);
-    }
-
     public int updateQuantity(Item item, int quantity) {
         int quantityToSet = quantity;
         if (quantity < 0) {
             quantityToSet = 0;
         }
+        log.debug("Updating item(id={}, name={}) quantity to {}", item.getId(), item.getName(), quantity);
         item.setQuantity(quantityToSet);
         itemRepository.save(item);
         return quantityToSet;

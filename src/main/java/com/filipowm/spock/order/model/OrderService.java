@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 /**
  * @author Mateusz Filipowicz
@@ -46,19 +47,14 @@ public class OrderService {
         return result.getStatus();
     }
 
-    private void updateOrderStatusAfterPayment(Order order, PaymentResult result) {
-        OrderStatus status = OrderStatus.PAYMENT_ERROR;
-        if (result.getStatus() == PaymentStatus.OK) {
-            status = OrderStatus.PAID;
-        }
-        orderRepository.updateStatus(order.getId(), status);
-    }
-
     public boolean canOrder(Item item, User user, int quantity) {
         return item.getQuantity() >= quantity;
     }
 
     public Order order(List<Item> items, User user) throws CannotOrderItemException {
+        if (items.isEmpty()) {
+            throw new NullPointerException("No items ordered");
+        }
         Map<Integer, List<Item>> grouped = groupItems(items);
 
         if (! canOrder(grouped, user)) {
@@ -73,7 +69,10 @@ public class OrderService {
         orderRepository.save(order);
         itemService.decrementQuantity(items);
 
-        CompletableFuture.runAsync(() -> storeService.prepare(order));
+        CompletableFuture.runAsync(() -> {
+            storeService.prepare(order);
+            orderRepository.updateStatus(order, OrderStatus.PREPARED);
+        }, Executors.newSingleThreadExecutor());
         return order;
     }
 
@@ -109,6 +108,14 @@ public class OrderService {
             }
         }
         return canOrder;
+    }
+
+    private void updateOrderStatusAfterPayment(Order order, PaymentResult result) {
+        OrderStatus status = OrderStatus.PAYMENT_ERROR;
+        if (result.getStatus() == PaymentStatus.OK) {
+            status = OrderStatus.PAID;
+        }
+        orderRepository.updateStatus(order, status);
     }
 
 }

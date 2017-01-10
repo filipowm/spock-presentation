@@ -9,9 +9,10 @@ import com.filipowm.spock.order.model.OrderStatus;
  * @author Mateusz Filipowicz
  */
 public class OrderRepositoryImpl extends FakeRepository<Order> implements OrderRepository {
+
     @Override
-    public Order updateStatus(Integer id, OrderStatus status) {
-        Order order = data.get(id).withStatus(status);
+    public Order updateStatus(Order order, OrderStatus status) {
+        order.setStatus(status);
         return save(order);
     }
 }

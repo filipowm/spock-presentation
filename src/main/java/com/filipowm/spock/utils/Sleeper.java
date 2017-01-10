@@ -22,6 +22,7 @@ public class Sleeper {
     public static void sleep(int min, int max) {
         Random random = new Random();
         int millis = random.nextInt(max - min) + min;
+        log.info("sleeping for: {}", millis);
         sleep(millis);
     }
 }

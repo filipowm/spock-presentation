@@ -7,6 +7,6 @@ import com.filipowm.spock.Repository;
  */
 public interface OrderRepository extends Repository<Order> {
 
-    Order updateStatus(Integer id, OrderStatus status);
+    Order updateStatus(Order order, OrderStatus status);
 
 }

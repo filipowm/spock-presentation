@@ -17,4 +17,9 @@ public class FakePaymentProvider implements PaymentProvider {
         Sleeper.sleep(500, 3000);
         return new PaymentResult(PaymentStatus.OK);
     }
+
+    @Override
+    public void shutdown() {
+        log.info("Shutting down payment provider");
+    }
 }
