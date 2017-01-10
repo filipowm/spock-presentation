@@ -1,0 +1,36 @@
+buildscript {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+repositories {
+    mavenCentral()
+}
+
+compileJava { options.encoding = 'UTF-8' }
+
+def versions = [
+        slf4j      : '1.7.21',
+        spock      : '1.0-groovy-2.4',
+        objenesis  : '2.4',
+        cglib: '3.2.4'
+]
+
+dependencies {
+    compile "org.slf4j:slf4j-api:${versions.slf4j}"
+    testCompile(
+            "org.spockframework:spock-core:${versions.spock}",
+            "cglib:cglib:${versions.cglib}",
+            "org.objenesis:objenesis:${versions.objenesis}",
+    )
+}
